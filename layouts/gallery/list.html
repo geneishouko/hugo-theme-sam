@@ -7,8 +7,8 @@
 {{ if .Params.clickablePhotos }}
     <div class="grid {{ cond $keepAspectRatio "keep-aspect-ratio" "" }}">
     {{ $images := .Resources.ByType "image" }}
-    {{ range $index, $element := shuffle $images }}
-        {{ $resized := $element.Resize $.Params.maxWidth }}
+    {{ range $index, $element := $images }}
+        {{ $resized := ($element.Resize (print $.Params.maxWidth " webp")) }}
         <div>
             <a href="{{ $element.RelPermalink }}" data-size="{{ $element.Width }}x{{ $element.Height }}">
                 <img src="{{ $resized.RelPermalink }}" alt="{{ $element.Name }}" data-index="{{ $index }}"/>
@@ -19,8 +19,8 @@
 {{ else }}
     <div class="grid {{ cond $keepAspectRatio "keep-aspect-ratio" "" }}">
     {{ $images := .Resources.ByType "image" }}
-    {{ range shuffle $images }}
-        {{ $resized := .Resize $.Params.maxWidth }}
+    {{ range $images }}
+        {{ $resized := (.Resize (print $.Params.maxWidth " webp")) }}
         <div>
             <img src="{{ $resized.RelPermalink }}" alt="{{ .Name }}" />
         </div>
